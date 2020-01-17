@@ -1,0 +1,39 @@
+#!/bin/bash
+
+MONGO_IMAGE=$1
+VER=$2
+VULN_THRESHOLD=$3
+COMPLIANCE_THESHOLD=$4
+
+echo "building Docker image knote:$VER"
+cp Dockerfile.$VER Dockerfile
+# cp package.json.$VER package.json
+docker build -t knote:$VER .
+docker tag knote:$VER matthewabq/knote
+
+read -p "Do security check and push images if all is well? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+   echo "scanning matthewabq/knote for vulnerbilities and compliance issues"
+   ./scanImage matthewabq/knote $VULN_THRESHOLD $COMPLIANCE_THESHOLD 
+   OUT=$?
+   if [ $OUT -eq 0 ];then
+     echo "Image matthewabq/knote passes scan, let's scan $MONGO_IMAGE"
+     ./scanImage $MONGO_IMAGE $VULN_THRESHOLD $COMPLIANCE_THESHOLD 
+     OUT=$?
+     if [ $OUT -eq 0 ];then
+       echo $MONGO_IMAGE passes scan, push it as matthewabq/mongo
+       docker tag $MONGO_IMAGE matthewabq/mongo
+       docker push matthewabq/knote
+       docker push matthewabq/mongo
+     else
+       echo "$MONGO_IMAGE is not secure, secure it before sharing with others!"
+     fi   
+   else
+     echo "knote image is not secure, secure it before sharing with others!"
+   fi
+fi
+
+echo "build and secure complete!"
+

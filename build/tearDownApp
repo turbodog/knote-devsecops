@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "removing app and deleting network"
+docker stop knote mongo 2>/dev/null
+docker network rm knote 2>/dev/null
+
+
