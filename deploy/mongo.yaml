@@ -1,7 +1,8 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: minio-pvc
+  name: mongo-pvc
+  namespace: devsecops
 spec:
   accessModes:
     - ReadWriteOnce
@@ -12,44 +13,40 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: minio
+  name: mongo
+  namespace: devsecops
 spec:
   selector:
-    app: minio
+    app: mongo
   ports:
-    - port: 9000
-      targetPort: 9000
+    - port: 27017
+      targetPort: 27017
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: minio
+  name: mongo
+  namespace: devsecops
 spec:
   selector:
     matchLabels:
-      app: minio
+      app: mongo
   template:
     metadata:
       labels:
-        app: minio
+        app: mongo
     spec:
       containers:
-        - name: minio
-          image: minio/minio
-          args:
-            - server
-            - /storage
-          env:
-            - name: MINIO_ACCESS_KEY
-              value: mykey
-            - name: MINIO_SECRET_KEY
-              value: mysecret
+        - name: mongo
+          image: matthewabq/mongo
           ports:
-            - containerPort: 9000
+            - containerPort: 27017
           volumeMounts:
             - name: storage
-              mountPath: /storage
+              mountPath: /data/db
       volumes:
         - name: storage
           persistentVolumeClaim:
-            claimName: minio-pvc
+            claimName: mongo-pvc
+
+

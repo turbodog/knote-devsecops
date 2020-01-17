@@ -1,0 +1,6 @@
+#!/bin/bash
+IMAGE=$1
+twistcli images scan -u $CI_USER -p $CI_USER_PW --address $PRISMA_CLOUD_URL \
+   --only-fixed  --vulnerability-threshold $2 --compliance-threshold $3 $IMAGE 
+
+

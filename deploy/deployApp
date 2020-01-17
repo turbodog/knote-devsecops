@@ -1,0 +1,16 @@
+#!/bin/bash
+
+kubectl create ns devsecops
+
+kubectl create -f mongo.yaml
+kubectl create -f knote.yaml
+kubectl create -f svc-knote.yaml
+
+kubectl get svc -n devsecops 
+
+sleep 20
+
+kubectl get events -n devsecops
+
+
+

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+MONGO_IMAGE=$1
+VER=$2
+
+echo "building knote Docker image knote:$VER"
+cp Dockerfile.$VER Dockerfile
+# cp package.json.$VER package.json
+docker build -t knote:$VER .
+docker tag knote:$VER matthewabq/knote
+
+echo "pulling mongo image and tagging it as matthewabq/mongo"
+docker pull $MONGO_IMAGE
+docker tag $MONGO_IMAGE matthewabq/mongo
+
+read -p "Push both images to registry? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+   echo "pushing matthewabq/knote to registry"
+   docker push matthewabq/knote
+   echo "pushing matthewabq/mongo to registry"
+   docker push matthewabq/mongo       
+fi
+
+
+
+echo "insecure build and share complete!"
+
