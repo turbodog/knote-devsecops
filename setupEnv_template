@@ -1,0 +1,4 @@
+export PRISMA_CLOUD_URL='<URL>'
+export CI_USER='<USERNAME>'
+export CI_USER_PW='<USER_PW>'
+
