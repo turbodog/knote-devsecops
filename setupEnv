@@ -1,4 +1,0 @@
-export PRISMA_CLOUD_URL='https://matt-demo.lab.twistlock.com:8083'
-export CI_USER='ciuser'
-export CI_USER_PW='ci-user'
-
