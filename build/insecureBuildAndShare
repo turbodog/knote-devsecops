@@ -1,17 +1,14 @@
 #!/bin/bash
 
-MONGO_IMAGE=$1
-VER=$2
+echo "building knote Docker image knote:1"
+cp Dockerfile.1 Dockerfile
+# cp package.json.1 package.json
+docker build -t knote:1 .
+docker tag knote:1 matthewabq/knote
 
-echo "building knote Docker image knote:$VER"
-cp Dockerfile.$VER Dockerfile
-# cp package.json.$VER package.json
-docker build -t knote:$VER .
-docker tag knote:$VER matthewabq/knote
-
-echo "pulling mongo image and tagging it as matthewabq/mongo"
-docker pull $MONGO_IMAGE
-docker tag $MONGO_IMAGE matthewabq/mongo
+echo "pulling official mongo image and tagging it as matthewabq/mongo"
+docker pull mongo 
+docker tag mongo matthewabq/mongo
 
 read -p "Push both images to registry? " -n 1 -r
 echo    # (optional) move to a new line
@@ -25,5 +22,5 @@ fi
 
 
 
-echo "insecure build and share complete!"
+echo "insecure build and share complete, you can try to deploy now"
 
