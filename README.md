@@ -19,7 +19,7 @@ $ cd deploy\
 $ kubectl get nodes\
 $ deployApp
 
-STEP 3: Build securely (use whatever thresholds you wish, <low, medium, high, critical))\
+STEP 3: Build securely (use whatever thresholds you wish, <low, medium, high, critical>)\
         First threshold is for CVE's, second one is for compliance tolerance\
 $ cd build\
 $ secureBuildAndShare high high  
