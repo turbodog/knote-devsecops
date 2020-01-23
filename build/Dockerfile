@@ -1,6 +1,4 @@
-FROM node:alpine3.11
+FROM node:12.0-slim
 COPY . .
 RUN npm install
-RUN npm audit fix
-USER node
 CMD [ "node", "index.js" ]
