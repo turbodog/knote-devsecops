@@ -1,23 +1,23 @@
 #!/bin/bash
 
-echo "building knote Docker image knote:1"
+echo "Building knote Docker image knote:1"
 cp Dockerfile.1 Dockerfile
 # cp package.json.1 package.json
 docker build -t knote:1 .
-docker tag knote:1 matthewabq/knote
+docker tag knote:1 $GH_USER/knote
 
-echo "pulling official mongo image and tagging it as matthewabq/mongo"
+echo "Pulling official mongo image and tagging it as $GH_USER/mongo"
 docker pull mongo 
-docker tag mongo matthewabq/mongo
+docker tag mongo $GH_USER/mongo
 
 read -p "Push both images to registry? " -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-   echo "pushing matthewabq/knote to registry"
-   docker push matthewabq/knote
-   echo "pushing matthewabq/mongo to registry"
-   docker push matthewabq/mongo       
+   echo "Pushing $GH_USER/knote to registry"
+   docker push $GH_USER/knote
+   echo "Pushing $GH_USER/mongo to registry"
+   docker push $GH_USER/mongo       
 fi
 
 
